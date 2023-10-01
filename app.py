@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, send_from_directory
 import os
-import whisper
+# import whisper
 import uuid
 from flask_cors import CORS
 
@@ -14,7 +14,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 ongoing_recordings = {}
 
 # setup whisper for video transcription
-model = whisper.load_model("tiny.en")
+# model = whisper.load_model("tiny.en")
 
 @app.route('/create', methods=['POST'])
 def create_video_instance():
@@ -68,8 +68,8 @@ def complete_video_recording(video_id):
     
     # Transcribe audio content after the recording is complete
     audio_content = b''.join(ongoing_recordings[video_id]['chunks'])
-    result = model.transcribe(audio_content)
-    transcription = result['segment']  
+    # result = model.transcribe(audio_content)
+    transcription = " Hi " # result['segment']  
 
     # Save the complete video to disk
     video_filename = f"{video_id}.mp4"
