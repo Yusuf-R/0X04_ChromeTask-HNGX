@@ -87,10 +87,10 @@ Response:
 
 ```
 
-3. Render Video
+4. Render Video
 - Endpoint:`/render/<video-id>`
 - Method: `GET`
-- Description: Retrieves the video for rendering along side the transcribed text
+- Description: Retrieves the video for rendering alongside the transcribed text
 
 
 Example:
