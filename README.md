@@ -30,7 +30,10 @@ Make sure you have the following installed on your machine:
    ```bash
    python app.py
    ```
-The API will be accessible at http://127.0.0.1:5000/.
+The API will be accessible at http://127.0.0.1:5000/ locally
+or via render
+https://tavish-chrome.onrender.com
+
 
 ## API Endpoints
 1. Create Video Instance
@@ -41,6 +44,10 @@ The API will be accessible at http://127.0.0.1:5000/.
 Example:
 ```bash
 curl -X POST http://127.0.0.1:5000/create
+```
+or 
+```bash
+curl -X POST https://tavish-chrome.onrender.com/create
 ```
 
 Response:
@@ -56,13 +63,15 @@ Response:
 Example:
 ```bash
 curl -X PUT --data-binary "@video_chunk.mp4" http://127.0.0.1:5000/update/9b485351-cb75-45a1-919c-6fe369bd7c63 -H "Content-Type: multipart/form-data"
-
+```
+or 
+```bash
+curl -X PUT --data-binary "@video_chunk.mp4" http://tavish-chrome.onrender.com/update/9b485351-cb75-45a1-919c-6fe369bd7c63 -H "Content-Type: multipart/form-data"
 ```
 
 Response:
 ```
 {"message": "Chunk received successfully"}
-
 ```
 
 
@@ -75,6 +84,10 @@ Response:
 Example:
 ```bash
 curl -X PUT http://127.0.0.1:5000/complete/9b485351-cb75-45a1-919c-6fe369bd7c63
+```
+or
+```bash
+curl -X PUT http://tavish-chrome.onrender.com/complete/9b485351-cb75-45a1-919c-6fe369bd7c63
 ```
 
 Response:
@@ -95,7 +108,11 @@ Response:
 
 Example:
 ```bash
-curl http://127.0.0.1:5000/render/9b485351-cb75-45a1-919c-6fe369bd7c63
+curl http://0.0.1:5000/render/9b485351-cb75-45a1-919c-6fe369bd7c63
+```
+or
+```bash
+curl http://tavish-chrome.onrender.com/render/9b485351-cb75-45a1-919c-6fe369bd7c63
 ```
 
 Response:
