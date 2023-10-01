@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 import os
-import whisper
+# import whisper
 import uuid
 from flask_cors import CORS
 
@@ -23,7 +23,7 @@ class Video(db.Model):
 ongoing_recordings = {}
 
 # setup whisper for video transcription
-model = whisper.load_model("tiny.en")
+# model = whisper.load_model("tiny.en")
 
 @app.route('/create', methods=['POST'])
 def create_video_instance():
@@ -77,8 +77,8 @@ def complete_video_recording(video_id):
     
     # Transcribe audio content after the recording is complete
     audio_content = b''.join(ongoing_recordings[video_id]['chunks'])
-    result = model.transcribe(audio_content)
-    transcription = result['segment']  
+    # result = model.transcribe(audio_content)
+    transcription = "Hi"# result['segment']  
 
     # Store the transcription in the ongoing recordings
     ongoing_recordings[video_id]['transcription'] = transcription

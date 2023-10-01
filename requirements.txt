@@ -28,19 +28,19 @@ multidict==6.0.4
 networkx==3.1
 numba==0.58.0
 numpy==1.25.2
-nvidia-cublas-cu11==11.10.3.66
-nvidia-cuda-cupti-cu11==11.7.101
-nvidia-cuda-nvrtc-cu11==11.7.99
-nvidia-cuda-runtime-cu11==11.7.99
-nvidia-cudnn-cu11==8.5.0.96
-nvidia-cufft-cu11==10.9.0.58
-nvidia-curand-cu11==10.2.10.91
-nvidia-cusolver-cu11==11.4.0.1
-nvidia-cusparse-cu11==11.7.4.91
-nvidia-nccl-cu11==2.14.3
-nvidia-nvtx-cu11==11.7.91
-openai==0.28.1
-openai-whisper==20230918
+# nvidia-cublas-cu11==11.10.3.66
+# nvidia-cuda-cupti-cu11==11.7.101
+# nvidia-cuda-nvrtc-cu11==11.7.99
+# nvidia-cuda-runtime-cu11==11.7.99
+# nvidia-cudnn-cu11==8.5.0.96
+# nvidia-cufft-cu11==10.9.0.58
+# nvidia-curand-cu11==10.2.10.91
+# nvidia-cusolver-cu11==11.4.0.1
+# nvidia-cusparse-cu11==11.7.4.91
+# nvidia-nccl-cu11==2.14.3
+# nvidia-nvtx-cu11==11.7.91
+# openai==0.28.1
+# openai-whisper==20230918
 packaging==23.1
 proglog==0.1.10
 regex==2023.8.8
