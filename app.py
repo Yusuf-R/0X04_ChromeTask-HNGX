@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify, send_from_directory
-from flask_sqlalchemy import SQLAlchemy
 import os
-# import whisper
+import whisper
 import uuid
 from flask_cors import CORS
 
@@ -9,33 +8,19 @@ app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 Mb
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///videos.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
 CORS(app, resources={r"/*": {"origins": "*"}})
-
-# Model for Video
-class Video(db.Model):
-    id = db.Column(db.String(36), primary_key=True)
-    completed = db.Column(db.Boolean, default=False)
 
 # Store information about ongoing recordings
 ongoing_recordings = {}
 
 # setup whisper for video transcription
-# model = whisper.load_model("tiny.en")
+model = whisper.load_model("tiny.en")
 
 @app.route('/create', methods=['POST'])
 def create_video_instance():
     # Generate a new video ID using uuid.uuid4()
     video_id = str(uuid.uuid4())
     ongoing_recordings[video_id] = {'chunks': [], 'completed': False}
-
-    with app.app_context():  # Establish application context
-        # Save the video instance to the database
-        new_video = Video(id=video_id, completed=False)
-        db.session.add(new_video)
-        db.session.commit()
 
     return jsonify({"id": video_id}), 201
 
@@ -62,6 +47,12 @@ def update_video_chunk(video_id, chunk_index):
         video_content = b''.join(chunk['data'] for chunk in sorted_chunks)
 
         # Continue with the rest of your logic (e.g., transcription, saving to disk)
+        
+        # Save the complete video to disk
+        video_filename = f"{video_id}.mp4"
+        video_path = os.path.join(app.config['UPLOAD_FOLDER'], video_filename)
+        with open(video_path, 'wb') as f:
+            f.write(video_content)
 
         return jsonify({"message": "Last chunk received. Processing complete"}), 200
 
@@ -77,22 +68,14 @@ def complete_video_recording(video_id):
     
     # Transcribe audio content after the recording is complete
     audio_content = b''.join(ongoing_recordings[video_id]['chunks'])
-    # result = model.transcribe(audio_content)
-    transcription = "Hi"# result['segment']  
-
-    # Store the transcription in the ongoing recordings
-    ongoing_recordings[video_id]['transcription'] = transcription
+    result = model.transcribe(audio_content)
+    transcription = result['segment']  
 
     # Save the complete video to disk
     video_filename = f"{video_id}.mp4"
     video_path = os.path.join(app.config['UPLOAD_FOLDER'], video_filename)
     with open(video_path, 'wb') as f:
         f.write(audio_content)
-
-    # Update the database to mark the video as completed
-    completed_video = Video.query.get(video_id)
-    completed_video.completed = True
-    db.session.commit()
 
     return jsonify({
         "message": "Recording completed",
@@ -122,15 +105,8 @@ def play_video(video_filename):
 
 @app.route('/all_ids', methods=['GET'])
 def get_all_video_ids():
-    all_ids = [{'id': video.id, 'completed': video.completed} for video in Video.query.all()]
+    all_ids = [{'id': video_id, 'completed': ongoing_recordings[video_id]['completed']} for video_id in ongoing_recordings]
     return jsonify(all_ids), 200
 
 if __name__ == '__main__':
-    with app.app_context():  # Establish application context
-        db.create_all()
     app.run(debug=True)
-
-
-
-
-
